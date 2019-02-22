@@ -4,7 +4,7 @@ const axios = require("axios");
 
 class WeatherApi {
   constructor(apiKey) {
-    this.baseUrl = "http://api.openweathermap.org/data/2.5/find";
+    this.baseUrl = "http://api.openweathermap.org/data/2.5/weather";
     this.apiKey = apiKey;
     this.client = axios.create({
       baseURL: this.baseURL,
@@ -15,25 +15,24 @@ class WeatherApi {
     });
   }
 
-  getData(city, countryCode) {
-    const url = `${this.baseUrl}?q=${city},${countryCode}&units=metric&appid=${
-      this.apiKey
-    }`;
+  getData(zipCode, countryCode) {
+    const url = `${
+      this.baseUrl
+    }?zip=${zipCode},${countryCode}&units=metric&appid=${this.apiKey}`;
     console.log(url);
     this.client
       .get(url)
       .then(data => {
-        const weather = data.data.list[0];
+        const weather = data.data;
         const weatherInfo = {
           name: weather.name,
+          zip: zipCode,
           country: weather.sys.country,
           temperature: weather.main.temp,
-          humidity: weather.main.humidity,
-          weather: weather.weather[0].description,
-          wind: weather.wind.speed,
+          description: weather.weather[0].description,
           clouds: weather.clouds.all,
-          rain: weather.rain,
-          snow: weather.snow
+          humidity: weather.main.humidity,
+          wind_speed: weather.wind.speed
         };
         console.log(weatherInfo);
       })
