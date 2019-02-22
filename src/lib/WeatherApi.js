@@ -36,7 +36,7 @@ class WeatherApi {
         };
         console.log(weatherInfo);
       })
-      .catch(err => console.error(err));
+      .catch(err => console.error(err.response.data));
   }
 }
 
